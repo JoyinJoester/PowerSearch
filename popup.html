@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerSearch</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 PowerSearch</h1>
+            <p class="current-query" id="currentQuery">检测中...</p>
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="search">搜索</button>
+                <button class="tab-btn" data-tab="manage">管理</button>
+            </div>
+        </div>
+        
+        <!-- 搜索标签页 -->
+        <div class="tab-content active" id="searchTab">
+            <div class="search-engines">
+                <!-- 主流搜索引擎 -->
+                <div class="engine-group">
+                    <h3>主流搜索引擎</h3>
+                    <button class="engine-btn" 
+                            data-engine-url="https://www.google.com/search?q="
+                            data-engine-name="Google">
+                        <span class="icon">🌐</span>
+                        <span class="name">Google</span>
+                    </button>
+                    
+                    <button class="engine-btn" 
+                            data-engine-url="https://www.bing.com/search?q="
+                            data-engine-name="Bing">
+                        <span class="icon">🔍</span>
+                        <span class="name">Bing</span>
+                    </button>
+                    
+                    <button class="engine-btn" 
+                            data-engine-url="https://www.baidu.com/s?wd="
+                            data-engine-name="百度">
+                        <span class="icon">🐾</span>
+                        <span class="name">百度</span>
+                    </button>
+                    
+                    <button class="engine-btn" 
+                            data-engine-url="https://duckduckgo.com/?q="
+                            data-engine-name="DuckDuckGo">
+                        <span class="icon">🦆</span>
+                        <span class="name">DuckDuckGo</span>
+                    </button>
+                </div>
+                
+                <!-- 专业搜索引擎 -->
+                <div class="engine-group">
+                    <h3>专业搜索引擎</h3>
+                    <button class="engine-btn" 
+                            data-engine-url="https://github.com/search?q="
+                            data-engine-name="GitHub">
+                        <span class="icon">💻</span>
+                        <span class="name">GitHub</span>
+                    </button>
+                    
+                    <button class="engine-btn" 
+                            data-engine-url="https://yandex.com/search/?text="
+                            data-engine-name="Yandex">
+                        <span class="icon">🔴</span>
+                        <span class="name">Yandex</span>
+                    </button>
+                    
+                    <button class="engine-btn" 
+                            data-engine-url="https://www.ecosia.org/search?q="
+                            data-engine-name="Ecosia">
+                        <span class="icon">🌱</span>
+                        <span class="name">Ecosia</span>
+                    </button>
+                    
+                    <button class="engine-btn" 
+                            data-engine-url="https://www.startpage.com/sp/search?query="
+                            data-engine-name="Startpage">
+                        <span class="icon">🔐</span>
+                        <span class="name">Startpage</span>
+                    </button>
+                    
+                    <button class="engine-btn" 
+                            data-engine-url="https://www.searx.me/?q="
+                            data-engine-name="SearX">
+                        <span class="icon">🔧</span>
+                        <span class="name">SearX</span>
+                    </button>
+                </div>
+                
+                <!-- 中文搜索引擎 -->
+                <div class="engine-group">
+                    <h3>中文搜索引擎</h3>
+                    <button class="engine-btn" 
+                            data-engine-url="https://www.sogou.com/web?query="
+                            data-engine-name="搜狗">
+                        <span class="icon">🐶</span>
+                        <span class="name">搜狗</span>
+                    </button>
+                    
+                    <button class="engine-btn" 
+                            data-engine-url="https://www.so.com/s?q="
+                            data-engine-name="360搜索">
+                        <span class="icon">🔵</span>
+                        <span class="name">360搜索</span>
+                    </button>
+                    
+                    <button class="engine-btn" 
+                            data-engine-url="https://cn.bing.com/search?q="
+                            data-engine-name="必应中国">
+                        <span class="icon">🇨🇳</span>
+                        <span class="name">必应中国</span>
+                    </button>
+                </div>
+                
+                <!-- 自定义搜索引擎 -->
+                <div class="engine-group hidden" id="customEnginesGroup">
+                    <h3>自定义搜索引擎</h3>
+                    <div id="customEnginesContainer"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 管理标签页 -->
+        <div class="tab-content" id="manageTab">
+            <div class="manage-section">
+                <h3>添加自定义搜索引擎</h3>
+                <form id="addEngineForm" class="engine-form">
+                    <div class="form-group">
+                        <label for="engineName">名称：</label>
+                        <input type="text" id="engineName" placeholder="例如：GitHub" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="engineIcon">图标：</label>
+                        <input type="text" id="engineIcon" placeholder="例如：💻" maxlength="2">
+                    </div>
+                    <div class="form-group">
+                        <label for="engineUrl">搜索URL：</label>
+                        <input type="url" id="engineUrl" placeholder="例如：https://github.com/search?q=" required>
+                        <small>URL中搜索关键词的位置用 {query} 表示，或直接在末尾添加</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="engineDomain">域名：</label>
+                        <input type="text" id="engineDomain" placeholder="例如：github.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="engineParam">搜索参数：</label>
+                        <input type="text" id="engineParam" placeholder="例如：q" required>
+                        <small>URL中搜索关键词的参数名</small>
+                    </div>
+                    <button type="submit" class="btn-primary">添加搜索引擎</button>
+                </form>
+            </div>
+            
+            <div class="manage-section">
+                <h3>已添加的自定义搜索引擎</h3>
+                <div id="customEnginesList" class="custom-engines-list">
+                    <p class="no-engines">暂无自定义搜索引擎</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p class="tip">点击任一搜索引擎即可用相同关键词重新搜索</p>
+        </div>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>

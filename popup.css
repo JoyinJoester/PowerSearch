@@ -1,0 +1,503 @@
+/* 搜索引擎切换器样式文件 */
+
+/* 基础样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 主容器样式 */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 600px;
+    color: #333;
+}
+
+.container {
+    width: 420px;
+    min-height: 620px;
+    background: rgba(255, 255, 255, 0.95);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* 头部样式 */
+.header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.current-query {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #4ecdc4;
+    word-wrap: break-word;
+    max-width: 100%;
+    transition: all 0.3s ease;
+}
+
+/* 搜索引擎分组样式 */
+.search-engines {
+    max-height: 420px;
+    overflow-y: auto;
+    /* Firefox 支持的滚动条样式 */
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 transparent;
+}
+
+.search-engines::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-engines::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.search-engines::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 3px;
+}
+
+.search-engines::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+.engine-group {
+    margin-bottom: 20px;
+}
+
+.engine-group h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 12px;
+    padding-left: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 搜索引擎按钮样式 */
+.engine-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2d3748;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.engine-btn:hover:not(:disabled) {
+    background: #f7fafc;
+    border-color: #4299e1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);
+}
+
+.engine-btn:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.engine-btn:disabled {
+    background: #f7fafc;
+    border-color: #e2e8f0;
+    color: #a0aec0;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.engine-btn .icon {
+    font-size: 18px;
+    margin-right: 12px;
+    min-width: 24px;
+    text-align: center;
+}
+
+.engine-btn .name {
+    flex: 1;
+    font-weight: 500;
+}
+
+/* 特殊搜索引擎按钮颜色 */
+.engine-btn[data-engine-name="Google"]:hover:not(:disabled) {
+    border-color: #4285f4;
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.15);
+}
+
+.engine-btn[data-engine-name="Bing"]:hover:not(:disabled) {
+    border-color: #0078d4;
+    box-shadow: 0 4px 12px rgba(0, 120, 212, 0.15);
+}
+
+.engine-btn[data-engine-name="百度"]:hover:not(:disabled) {
+    border-color: #2932e1;
+    box-shadow: 0 4px 12px rgba(41, 50, 225, 0.15);
+}
+
+.engine-btn[data-engine-name="DuckDuckGo"]:hover:not(:disabled) {
+    border-color: #de5833;
+    box-shadow: 0 4px 12px rgba(222, 88, 51, 0.15);
+}
+
+/* 底部样式 */
+.footer {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+.tip {
+    font-size: 12px;
+    color: #718096;
+    line-height: 1.4;
+}
+
+/* 响应式设计 */
+@media (max-width: 400px) {
+    .container {
+        width: 320px;
+        padding: 16px;
+    }
+    
+    .header h1 {
+        font-size: 18px;
+    }
+    
+    .engine-btn {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+    
+    .engine-btn .icon {
+        font-size: 16px;
+        margin-right: 10px;
+    }
+}
+
+/* 加载动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.engine-group {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.engine-group:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.engine-group:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.engine-group:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+/* 焦点样式 */
+.engine-btn:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+/* 错误状态样式 */
+.current-query.error {
+    border-left-color: #ff6b6b;
+    background: #fff5f5;
+    color: #c53030;
+}
+
+/* 成功状态样式 */
+.current-query.success {
+    border-left-color: #48bb78;
+    background: #f0fff4;
+    color: #2f855a;
+}
+
+/* 警告状态样式 */
+.current-query.warning {
+    border-left-color: #ed8936;
+    background: #fffaf0;
+    color: #c05621;
+}
+
+/* 标签页样式 */
+.tabs {
+    display: flex;
+    margin-top: 16px;
+    border-radius: 8px;
+    background: #f8f9fa;
+    padding: 4px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+    background: white;
+    color: #2563eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tab-btn:hover:not(.active) {
+    color: #374151;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* 标签内容样式 */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* 管理部分样式 */
+.manage-section {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.manage-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.manage-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 16px;
+}
+
+/* 表单样式 */
+.engine-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.form-group input {
+    padding: 8px 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group small {
+    font-size: 11px;
+    color: #6b7280;
+    line-height: 1.4;
+}
+
+/* 按钮样式 */
+.btn-primary {
+    padding: 10px 20px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* 自定义搜索引擎列表样式 */
+.custom-engines-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.custom-engine-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    margin-bottom: 8px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.engine-info {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 12px;
+}
+
+.engine-icon {
+    font-size: 18px;
+    min-width: 24px;
+    text-align: center;
+}
+
+.engine-details {
+    flex: 1;
+}
+
+.engine-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 2px;
+}
+
+.engine-url {
+    font-size: 12px;
+    color: #6b7280;
+    word-break: break-all;
+    margin-bottom: 2px;
+}
+
+.engine-meta {
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+.engine-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-edit,
+.btn-delete {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-edit {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.btn-edit:hover {
+    background: #e5e7eb;
+}
+
+.btn-delete {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.btn-delete:hover {
+    background: #fecaca;
+}
+
+.no-engines {
+    text-align: center;
+    color: #6b7280;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* 隐藏自定义搜索引擎组 */
+.engine-group.hidden {
+    display: none;
+}
+
+/* 响应式调整 */
+@media (max-width: 450px) {
+    .container {
+        width: 360px;
+        padding: 16px;
+    }
+    
+    .custom-engine-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    
+    .engine-info {
+        gap: 8px;
+    }
+    
+    .engine-actions {
+        justify-content: center;
+    }
+}
