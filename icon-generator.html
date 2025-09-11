@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerSearch Icon Generator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .icon-preview {
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            background: #fafafa;
+        }
+        .icon-preview h3 {
+            margin: 0 0 15px 0;
+            color: #495057;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px 5px;
+            font-size: 14px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .download-all {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .download-all button {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            font-size: 16px;
+            padding: 15px 30px;
+        }
+        .description {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #2196f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 PowerSearch Icon Generator</h1>
+        
+        <div class="description">
+            <h3>📋 使用说明</h3>
+            <p>1. 点击下方的"📦 生成所有图标"按钮</p>
+            <p>2. 自动下载4个不同尺寸的PNG图标文件</p>
+            <p>3. 将下载的图标文件替换到 icons/ 目录中</p>
+            <p>4. 重新加载Chrome扩展即可看到新图标</p>
+        </div>
+
+        <div class="icon-grid">
+            <div class="icon-preview">
+                <h3>16×16 (工具栏)</h3>
+                <canvas id="canvas16" width="16" height="16"></canvas>
+                <br>
+                <button onclick="downloadIcon(16)">下载 16×16</button>
+            </div>
+            
+            <div class="icon-preview">
+                <h3>32×32 (扩展页面)</h3>
+                <canvas id="canvas32" width="32" height="32"></canvas>
+                <br>
+                <button onclick="downloadIcon(32)">下载 32×32</button>
+            </div>
+            
+            <div class="icon-preview">
+                <h3>48×48 (扩展管理)</h3>
+                <canvas id="canvas48" width="48" height="48"></canvas>
+                <br>
+                <button onclick="downloadIcon(48)">下载 48×48</button>
+            </div>
+            
+            <div class="icon-preview">
+                <h3>128×128 (Chrome商店)</h3>
+                <canvas id="canvas128" width="128" height="128"></canvas>
+                <br>
+                <button onclick="downloadIcon(128)">下载 128×128</button>
+            </div>
+        </div>
+        
+        <div class="download-all">
+            <button onclick="generateAndDownloadAll()">📦 生成所有图标</button>
+        </div>
+    </div>
+
+    <script>
+        function drawPowerSearchIcon(ctx, size) {
+            // 清除画布
+            ctx.clearRect(0, 0, size, size);
+            
+            // 设置抗锯齿
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            
+            const center = size / 2;
+            const radius = size * 0.4;
+            
+            // 创建渐变背景
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            
+            // 绘制圆形背景
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(center, center, radius, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // 绘制边框
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = size > 32 ? 2 : 1;
+            ctx.stroke();
+            
+            // 绘制放大镜
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = Math.max(1, size / 20);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            // 放大镜镜片
+            const glassRadius = size * 0.15;
+            const glassX = center - size * 0.08;
+            const glassY = center - size * 0.08;
+            
+            ctx.beginPath();
+            ctx.arc(glassX, glassY, glassRadius, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // 放大镜手柄
+            const handleLength = size * 0.2;
+            const handleStartX = glassX + glassRadius * 0.7;
+            const handleStartY = glassY + glassRadius * 0.7;
+            const handleEndX = handleStartX + handleLength * 0.7;
+            const handleEndY = handleStartY + handleLength * 0.7;
+            
+            ctx.beginPath();
+            ctx.moveTo(handleStartX, handleStartY);
+            ctx.lineTo(handleEndX, handleEndY);
+            ctx.stroke();
+            
+            // 添加一个小的光亮效果
+            if (size >= 32) {
+                const highlightGradient = ctx.createRadialGradient(
+                    center - size * 0.15, center - size * 0.15, 0,
+                    center - size * 0.15, center - size * 0.15, size * 0.25
+                );
+                highlightGradient.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
+                highlightGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                
+                ctx.fillStyle = highlightGradient;
+                ctx.beginPath();
+                ctx.arc(center - size * 0.15, center - size * 0.15, size * 0.25, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+        }
+        
+        function generateIcon(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            const ctx = canvas.getContext('2d');
+            drawPowerSearchIcon(ctx, size);
+            return canvas;
+        }
+        
+        function downloadIcon(size) {
+            const canvas = generateIcon(size);
+            const link = document.createElement('a');
+            link.download = `icon${size}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        async function generateAndDownloadAll() {
+            const sizes = [16, 32, 48, 128];
+            
+            // 生成所有图标
+            sizes.forEach(size => generateIcon(size));
+            
+            // 延迟下载，确保生成完成
+            for (let i = 0; i < sizes.length; i++) {
+                setTimeout(() => {
+                    downloadIcon(sizes[i]);
+                }, i * 200);
+            }
+            
+            // 显示完成消息
+            setTimeout(() => {
+                alert('✅ 所有图标已生成并开始下载！\n\n请将下载的文件替换到 icons/ 目录中：\n- icon16.png\n- icon32.png\n- icon48.png\n- icon128.png');
+            }, 1000);
+        }
+        
+        // 页面加载时自动生成预览
+        window.addEventListener('load', () => {
+            [16, 32, 48, 128].forEach(size => {
+                generateIcon(size);
+            });
+        });
+    </script>
+</body>
+</html>
